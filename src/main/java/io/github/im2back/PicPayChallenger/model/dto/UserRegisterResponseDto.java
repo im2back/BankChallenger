@@ -15,7 +15,7 @@ public record UserRegisterResponseDto(
 
 		UserType type,
 		
-		String walletId
+		Long walletId
 		) {
 
 }
