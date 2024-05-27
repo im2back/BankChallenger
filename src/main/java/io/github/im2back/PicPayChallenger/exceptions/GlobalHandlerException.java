@@ -9,6 +9,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import io.github.im2back.PicPayChallenger.service.exceptions.AuthorizationException;
 import io.github.im2back.PicPayChallenger.service.exceptions.CannotBeDuplicatedException;
 import io.github.im2back.PicPayChallenger.service.exceptions.TransferValidationException;
 import io.github.im2back.PicPayChallenger.service.exceptions.UserNotFoundException;
@@ -22,12 +23,12 @@ public class GlobalHandlerException {
 			HttpServletRequest request) {
 
 		StandardError response = new StandardError();
-		response.setError("Bad request");
+		response.setError("Conflict");
 		response.setMessage(ex.getMessage());
-		response.setStatus(HttpStatus.BAD_REQUEST.value());
+		response.setStatus(HttpStatus.CONFLICT.value());
 		response.setPath(request.getRequestURI());
 
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
 	}
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
@@ -73,5 +74,18 @@ public class GlobalHandlerException {
 		response.setPath(request.getRequestURI());
 
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);		
+	}
+	
+	@ExceptionHandler(AuthorizationException.class)
+	ResponseEntity<StandardError> authorizationException(AuthorizationException ex,
+			HttpServletRequest request) {
+		
+		StandardError response = new StandardError();
+		response.setError("UNAUTHORIZED");
+		response.setMessage(ex.getMessage());
+		response.setStatus(HttpStatus.UNAUTHORIZED.value());
+		response.setPath(request.getRequestURI());
+
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);		
 	}
 }

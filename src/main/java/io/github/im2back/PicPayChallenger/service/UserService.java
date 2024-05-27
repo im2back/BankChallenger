@@ -71,7 +71,7 @@ public class UserService {
 		transferValidations.forEach(valid -> valid.valid(userPayer, userPayee, value));
 		
 		// autorizador externo
-		finalizeTransfer(); 
+		authorizationService.finalizeTransfer(); 
 		
 		// transferencia
 		receivePayment(userPayer, userPayee, value); 
@@ -88,12 +88,6 @@ public class UserService {
 		NotificationRequestDto notificationRequest = new NotificationRequestDto(userPayee.getEmail(),
 				"Pagamento recebido com sucesso!");
 		notificationService.sendNotification(notificationRequest);
-	}
-
-	private void finalizeTransfer() {
-		if (authorizationService.authorizeTransfer() == false) {
-			throw new RuntimeException("Transfer not authorized");
-		}
 	}
 
 	@Transactional(readOnly = true)
