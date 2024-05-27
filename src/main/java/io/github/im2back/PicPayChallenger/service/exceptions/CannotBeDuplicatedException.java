@@ -1,4 +1,4 @@
-package io.github.im2back.PicPayChallenger.exceptions;
+package io.github.im2back.PicPayChallenger.service.exceptions;
 
 public class CannotBeDuplicatedException extends RuntimeException{
 

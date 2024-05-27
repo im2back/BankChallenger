@@ -1,4 +1,4 @@
-package io.github.im2back.PicPayChallenger.exceptions;
+package io.github.im2back.PicPayChallenger.service.exceptions;
 
 public class TransferValidationException extends RuntimeException{
 	private static final long serialVersionUID = 1L;
