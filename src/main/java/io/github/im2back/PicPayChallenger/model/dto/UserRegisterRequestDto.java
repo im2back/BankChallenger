@@ -2,6 +2,7 @@ package io.github.im2back.PicPayChallenger.model.dto;
 
 import io.github.im2back.PicPayChallenger.model.entities.user.UserType;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public record UserRegisterRequestDto(
 		
@@ -17,7 +18,7 @@ public record UserRegisterRequestDto(
 		@NotBlank
 		String password,
 		
-		@NotBlank
+		@NotNull
 		UserType type
 
 ) {

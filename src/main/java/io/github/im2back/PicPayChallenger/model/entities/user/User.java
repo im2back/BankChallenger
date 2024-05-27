@@ -45,15 +45,16 @@ public class User {
 	private UserType type;
 	
 	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-	private Wallet wallet = new Wallet();
+	private Wallet wallet;
 
-	public User(String fullName, String identificationDocument, String email, String password, UserType type) {
+	public User(String fullName, String identificationDocument, String email, String password, UserType type,Wallet wallet) {
 		super();
 		this.fullName = fullName;
 		this.identificationDocument = identificationDocument;
 		this.email = email;
 		this.password = password;
 		this.type = type;
+		this.wallet = wallet;
 	}
 	
 	

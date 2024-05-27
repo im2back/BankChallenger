@@ -15,14 +15,15 @@ import io.github.im2back.PicPayChallenger.model.dto.UserRegisterResponseDto;
 import io.github.im2back.PicPayChallenger.service.UserService;
 import jakarta.validation.Valid;
 
-@RequestMapping(value = "/users")
+@RequestMapping("/users")
 @RestController
 public class UserController {
 	
 	@Autowired 
 	private UserService userService;
 	
-	@GetMapping(path = "{/id}")
+	
+	@GetMapping(value = "/{id}")
 	ResponseEntity<UserRegisterResponseDto> findUser(@PathVariable Long id){
 		var user = userService.findById(id);
 		return ResponseEntity.ok(new UserRegisterResponseDto(user.getId(), user.getFullName(),

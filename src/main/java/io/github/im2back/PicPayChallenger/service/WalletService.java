@@ -8,6 +8,7 @@ import io.github.im2back.PicPayChallenger.repositories.WalletRepository;
 @Service
 public class WalletService {
 	
+	@SuppressWarnings("unused")
 	@Autowired
 	private WalletRepository repository;
 
