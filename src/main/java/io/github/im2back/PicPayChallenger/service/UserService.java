@@ -63,7 +63,7 @@ public class UserService {
 	public void transfer(Long idPayer, Long idPayee, BigDecimal value) {
 
 		// carreguei os usuarios envolvidos
-		User userPayer = findById(idPayee);
+		User userPayer = findById(idPayer);
 		User userPayee = findById(idPayee);
 
 		// validacoes
@@ -74,8 +74,9 @@ public class UserService {
 		
 		// transferencia
 		receivePayment(userPayer, userPayee, value); 
-
-		repository.saveAll(Arrays.asList(userPayee, userPayer)); // persistindo a transferencia
+		
+		// persistindo a transferencia
+		repository.saveAll(Arrays.asList(userPayee, userPayer)); 
 	}
 
 	public void receivePayment(User userPayer, User userPayee, BigDecimal value) {
@@ -89,7 +90,7 @@ public class UserService {
 	}
 
 	private void finalizeTransfer() {
-		if (!authorizationService.authorizeTransfer()) {
+		if (authorizationService.authorizeTransfer() == false) {
 			throw new RuntimeException("Transfer not authorized");
 		}
 	}

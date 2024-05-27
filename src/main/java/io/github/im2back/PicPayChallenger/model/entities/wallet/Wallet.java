@@ -24,21 +24,21 @@ import lombok.Setter;
 @Setter
 @Table(name = "tb_wallet")
 public class Wallet {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private BigDecimal balance;
-	
+
 	@OneToOne
 	@JoinColumn(name = "user_id")
 	private User user;
-	
+
 	public void transfer(BigDecimal amount) {
-		 this.balance = this.balance.subtract(amount);
+		this.balance = this.balance.subtract(amount);
 	}
-	
+
 	public void receiveTransfer(BigDecimal amount) {
-		this.balance.add(amount);
+		this.balance = this.balance.add(amount);
 	}
 }

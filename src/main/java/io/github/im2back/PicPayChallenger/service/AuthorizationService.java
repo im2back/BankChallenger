@@ -2,6 +2,7 @@ package io.github.im2back.PicPayChallenger.service;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import io.github.im2back.PicPayChallenger.service.util.AuthorizationResponseDto;
@@ -18,9 +19,12 @@ public class AuthorizationService {
 	}
 
 	public boolean authorizeTransfer() {
-
-		AuthorizationResponseDto response = restTemplate.getForObject(authorizationUrl, AuthorizationResponseDto.class);
-
-		return response != null && response.data().authorization();
+		try {
+			AuthorizationResponseDto response = restTemplate.getForObject(authorizationUrl, AuthorizationResponseDto.class);
+			return response.data().authorization();
+		} catch (HttpClientErrorException.Forbidden e) {
+			throw new RuntimeException("Transfer not authorized");
+		}
+	
 	}
 }
