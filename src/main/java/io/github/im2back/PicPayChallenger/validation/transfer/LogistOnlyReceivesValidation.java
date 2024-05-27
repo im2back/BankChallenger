@@ -4,9 +4,9 @@ import java.math.BigDecimal;
 
 import org.springframework.stereotype.Component;
 
-import io.github.im2back.PicPayChallenger.exceptions.TransferValidationException;
 import io.github.im2back.PicPayChallenger.model.entities.user.User;
 import io.github.im2back.PicPayChallenger.model.entities.user.UserType;
+import io.github.im2back.PicPayChallenger.service.exceptions.TransferValidationException;
 
 @Component
 public class LogistOnlyReceivesValidation implements TransferValidations {

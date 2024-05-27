@@ -14,6 +14,7 @@ import io.github.im2back.PicPayChallenger.model.dto.UserRegisterResponseDto;
 import io.github.im2back.PicPayChallenger.model.entities.user.User;
 import io.github.im2back.PicPayChallenger.model.entities.wallet.Wallet;
 import io.github.im2back.PicPayChallenger.repositories.UserRepository;
+import io.github.im2back.PicPayChallenger.service.exceptions.UserNotFoundException;
 import io.github.im2back.PicPayChallenger.service.util.NotificationRequestDto;
 import io.github.im2back.PicPayChallenger.validation.transfer.TransferValidations;
 import io.github.im2back.PicPayChallenger.validation.user.UserRegistrationValidation;
@@ -97,7 +98,7 @@ public class UserService {
 
 	@Transactional(readOnly = true)
 	public User findById(Long id) {
-		return repository.findById(id).orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+		return repository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
 	}
 
 	@Transactional(readOnly = true)

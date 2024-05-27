@@ -5,10 +5,10 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import io.github.im2back.PicPayChallenger.exceptions.CannotBeDuplicatedException;
 import io.github.im2back.PicPayChallenger.model.dto.UserRegisterRequestDto;
 import io.github.im2back.PicPayChallenger.model.entities.user.User;
 import io.github.im2back.PicPayChallenger.repositories.UserRepository;
+import io.github.im2back.PicPayChallenger.service.exceptions.CannotBeDuplicatedException;
 
 @Component
 public class DocumentCannotBeDuplicated implements UserRegistrationValidation{

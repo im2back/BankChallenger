@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import io.github.im2back.PicPayChallenger.service.exceptions.AuthorizationException;
 import io.github.im2back.PicPayChallenger.service.util.AuthorizationResponseDto;
 
 @Service
@@ -23,7 +24,7 @@ public class AuthorizationService {
 			AuthorizationResponseDto response = restTemplate.getForObject(authorizationUrl, AuthorizationResponseDto.class);
 			return response.data().authorization();
 		} catch (HttpClientErrorException.Forbidden e) {
-			throw new RuntimeException("Transfer not authorized");
+			throw new AuthorizationException("Transfer not authorized");
 		}
 	
 	}
