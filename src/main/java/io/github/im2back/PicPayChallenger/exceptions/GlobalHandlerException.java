@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import io.github.im2back.PicPayChallenger.service.exceptions.AuthorizationException;
 import io.github.im2back.PicPayChallenger.service.exceptions.CannotBeDuplicatedException;
+import io.github.im2back.PicPayChallenger.service.exceptions.NotificationException;
 import io.github.im2back.PicPayChallenger.service.exceptions.TransferValidationException;
 import io.github.im2back.PicPayChallenger.service.exceptions.UserNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -62,30 +63,44 @@ public class GlobalHandlerException {
 
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	}
-	
+
 	@ExceptionHandler(UserNotFoundException.class)
-	ResponseEntity<StandardError> userNotFoundException(UserNotFoundException ex,
-			HttpServletRequest request) {
-		
+	ResponseEntity<StandardError> userNotFoundException(UserNotFoundException ex, HttpServletRequest request) {
+
 		StandardError response = new StandardError();
 		response.setError("Not Found");
 		response.setMessage(ex.getMessage());
 		response.setStatus(HttpStatus.NOT_FOUND.value());
 		response.setPath(request.getRequestURI());
 
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);		
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	}
-	
+
 	@ExceptionHandler(AuthorizationException.class)
-	ResponseEntity<StandardError> authorizationException(AuthorizationException ex,
-			HttpServletRequest request) {
-		
+	ResponseEntity<StandardError> authorizationException(AuthorizationException ex, HttpServletRequest request) {
+
 		StandardError response = new StandardError();
 		response.setError("UNAUTHORIZED");
 		response.setMessage(ex.getMessage());
 		response.setStatus(HttpStatus.UNAUTHORIZED.value());
 		response.setPath(request.getRequestURI());
 
-		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);		
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+	}
+
+	@ExceptionHandler(NotificationException.class)
+	ResponseEntity<StandardError> notificationException(NotificationException ex, HttpServletRequest request) {
+
+		String msgOriginal = ex.getMessage();
+
+		String msg = msgOriginal.replaceAll("^.*?\\\"message\\\": \\\"", "").replaceAll("\\\"}.*$", "");
+
+		StandardError response = new StandardError();
+		response.setError("SERVICE UNAVAILABLE");
+		response.setMessage(msg);
+		response.setStatus(HttpStatus.SERVICE_UNAVAILABLE.value());
+		response.setPath(request.getRequestURI());
+
+		return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(response);
 	}
 }
