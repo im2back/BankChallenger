@@ -1,4 +1,4 @@
-package io.github.im2back.transfer_microservice;
+package io.github.im2back.transfermicroservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
