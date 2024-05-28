@@ -21,7 +21,7 @@ public class UtilsTest {
     		new UserRegisterRequestDto("Antonio Jose", "1234567810", "antonio@gmail.com", "12345678", UserType.LOGISTA);
     
     public static final TransferRequestDto transferRequestDto = 
-    		new TransferRequestDto(1l, 2l, new BigDecimal(100));
+    		new TransferRequestDto(1l, 2l, new BigDecimal(50));
 
     static {
         // Inicialização do userComum e sua carteira
@@ -31,7 +31,7 @@ public class UtilsTest {
 
         // Inicialização do userLogista e sua carteira
         userLogista = new User(2L, "Antonio Jose", "1234567810", "antonio@gmail.com", "12345678", UserType.LOGISTA, null);
-        walletLogista = new Wallet(2L, new BigDecimal(100), userLogista);
+        walletLogista = new Wallet(2L, new BigDecimal(0), userLogista);
         userLogista.setWallet(walletLogista);      
     }
 
