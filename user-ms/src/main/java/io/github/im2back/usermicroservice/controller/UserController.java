@@ -43,7 +43,7 @@ public class UserController {
 	@PutMapping("/transfer")
 	ResponseEntity<Void> transfer(@Valid @RequestBody TransferRequestDto dto) {
 
-		userService.transfer(dto.idPayer(), dto.idPayee(), dto.value());
+		userService.transfer(dto);
 		return ResponseEntity.ok().build();
 	}
 

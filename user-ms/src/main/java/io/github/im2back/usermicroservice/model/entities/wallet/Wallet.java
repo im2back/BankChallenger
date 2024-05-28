@@ -2,6 +2,8 @@ package io.github.im2back.usermicroservice.model.entities.wallet;
 
 import java.math.BigDecimal;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import io.github.im2back.usermicroservice.model.entities.user.User;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -32,6 +34,7 @@ public class Wallet {
 
 	@OneToOne
 	@JoinColumn(name = "user_id")
+	@JsonIgnore
 	private User user;
 
 	public void transfer(BigDecimal amount) {
