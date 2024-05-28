@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import io.github.im2back.usermicroservice.model.dto.TransferRequestDto;
 import io.github.im2back.usermicroservice.model.dto.UserRegisterRequestDto;
 import io.github.im2back.usermicroservice.model.dto.UserRegisterResponseDto;
 import io.github.im2back.usermicroservice.model.entities.user.User;
@@ -50,14 +51,14 @@ public class UserService {
 	}
 
 	@Transactional
-	public void transfer(Long idPayer, Long idPayee, BigDecimal value) {
+	public void transfer(TransferRequestDto dto) {
 
 		// Carreguei os usuarios envolvidos e transferindo
-		User userPayer = findById(idPayer);
-		User userPayee = findById(idPayee);
+		User userPayer = findById(dto.idPayer());
+		User userPayee = findById(dto.idPayee());
 
-		userPayer.getWallet().transfer(value);
-		userPayee.getWallet().receiveTransfer(value);
+		userPayer.getWallet().transfer(dto.value());
+		userPayee.getWallet().receiveTransfer(dto.value());
 
 		// persistindo a transferencia
 		repository.saveAll(Arrays.asList(userPayee, userPayer));
