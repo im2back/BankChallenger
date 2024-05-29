@@ -14,6 +14,7 @@ import io.github.im2back.transfermicroservice.service.util.AuthorizationResponse
 public class AuthorizationService {
 
 	private final RestTemplate restTemplate;
+
 	@Value("${url.transfer}")
 	private String authorizationUrl;
 
@@ -34,10 +35,9 @@ public class AuthorizationService {
 
 	public void finalizeTransfer() {
 		ResponseEntity<AuthorizationResponseDto> response = authorizeTransfer();
-
 		AuthorizationResponseDto body = response.getBody();
-		Integer responseStatus = response.getStatusCode().value();
 
+		Integer responseStatus = response.getStatusCode().value();
 		String statusMessage = body.status();
 		boolean isAuthorized = body.data().authorization();
 

@@ -18,7 +18,7 @@ private ClientResourceClient clientResourceClient;
 	
 @Override
 public void valid(Long idUserPayer, Long idUserPayee, BigDecimal value) {
-	var response = clientResourceClient.findUser(idUserPayee);
+	var response = clientResourceClient.findUser(idUserPayer);
 	
 	UserDto userPayer = response.getBody();
 	
