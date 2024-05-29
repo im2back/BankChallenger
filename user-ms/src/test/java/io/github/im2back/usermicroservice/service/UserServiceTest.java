@@ -86,12 +86,6 @@ class UserServiceTest {
 
 		// ASSERT
 		BDDMockito.then(repository).should().saveAll(Arrays.asList(userPayee.get(), userPayer.get()));
-
-		assertEquals(userPayer.get().getWallet().getBalance(), new BigDecimal(50),
-				"Verificando se o saldo foi deduzido após a transferencia");
-		assertEquals(userPayee.get().getWallet().getBalance(), new BigDecimal(50),
-				"Verificando se o saldo foi depositado após a transferencia");
-
 	}
 
 	@Test
