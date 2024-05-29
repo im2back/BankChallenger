@@ -68,7 +68,7 @@ class UserControllerTest {
 
 		// ASSERT
 		BDDMockito.then(userService).should().findById(id);
-		assertEquals(response.getStatus(), 200, "Deveria retornar status 200 em caso de sucesso");
+		assertEquals(200,response.getStatus(),  "Deveria retornar status 200 em caso de sucesso");
 		assertEquals(id, objetoRecebido.id(), "O id do objeto retornado deve ser igual ao id fornecido");
 
 	}
@@ -92,7 +92,7 @@ class UserControllerTest {
 		assertEquals(UtilsTest.userRegisterRequest.identificationDocument(),
 				captorUserRegisterRequestDto.getValue().identificationDocument(),
 				"Verificando se o método de serviço foi chamado com o parametro correto");
-		assertEquals(response.getStatus(), 201, "Deveria retornar status 201 em caso de sucesso");
+		assertEquals(201,response.getStatus(),  "Deveria retornar status 201 em caso de sucesso");
 		assertEquals(objetoRecebido.identificationDocument(), UtilsTest.userRegisterRequest.identificationDocument(),
 				"O documento do objeto retornado deve ser igual ao documento fornecido");
 
@@ -123,7 +123,7 @@ class UserControllerTest {
         assertEquals(UtilsTest.transferRequestDto.value(), captorTransferRequestDto.getValue().value(),
                 "Verificando se o valor da transação está correto");
 
-        assertEquals(response.getStatus(), 200, "Deveria retornar status 200 em caso de sucesso");
+        assertEquals(200,response.getStatus(),  "Deveria retornar status 200 em caso de sucesso");
     }
 
 }

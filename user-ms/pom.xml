@@ -14,9 +14,12 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>user-microservice</name>
 	<description>Demo project for Spring Boot</description>
+	
 	<properties>
 		<java.version>17</java.version>
+		<sonar.exclusions>**/exceptions/**, **/usermicroservice/exceptions/**, **/model/**</sonar.exclusions>
 	</properties>
+	
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -65,6 +68,38 @@
 
 	<build>
 		<plugins>
+
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.7</version> <!-- Use a versão mais recente do JaCoCo -->
+				<executions>
+					<execution>
+						<id>jacoco-init</id> <!-- ID único para a execução -->
+						<goals>
+							<goal>prepare-agent</goal> <!-- Prepara o agente de
+							cobertura -->
+						</goals>
+					</execution>
+					<execution>
+						<id>jacoco-report</id> <!-- Outro ID único para esta
+						execução -->
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>report</goal> <!-- Gera o relatório de
+							cobertura -->
+						</goals>
+						<configuration>
+							<excludes>
+								<exclude>**/exceptions/**</exclude>
+								<exclude>**/usermicroservice/exceptions/**</exclude>
+								<exclude>**/model/**</exclude>
+							</excludes>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
@@ -79,5 +114,6 @@
 			</plugin>
 		</plugins>
 	</build>
+	
 
 </project>
