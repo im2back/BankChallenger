@@ -1,7 +1,12 @@
-# Status de Desenvolvimento 29/05/2024 🟢  
+# Status de Desenvolvimento 29/05/2024 🟢 
+
 - Parcialmente concluído (90%). Ainda será adicionado a dockerização.
 ### Confira a proposta do desafio original acessando o seguinte link: 👉🏻 <a href="https://github.com/PicPay/picpay-desafio-backend">Desafio - PicPay</a>.
 <br><br>
+ ▶ Clique na imagem abaixo para assistir ao vídeo de demonstração: CONSUMINDO E EXPLICANDO A API !
+
+[![Watch the video](https://img.youtube.com/vi/K3YI8UU0_g8/0.jpg)](https://youtu.be/K3YI8UU0_g8)
+
 # Objetivos ao Desenvolver Este Desafio 🏋🏻‍♀️
 Meu objetivo principal é aplicar meus conhecimentos em arquitetura e incorporar as melhores práticas de desenvolvimento.
 Estou igualmente empenhado em aprimorar minhas habilidades em gerenciamento de versionamento de código, utilizando o GitHub.
