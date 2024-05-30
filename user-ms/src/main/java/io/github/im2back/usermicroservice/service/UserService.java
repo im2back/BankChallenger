@@ -33,7 +33,7 @@ public class UserService {
 
 		// Criação da Wallet
 		Wallet wallet = new Wallet();
-		wallet.setBalance(BigDecimal.ZERO);
+		wallet.setBalance(new BigDecimal(10));
 
 		// Criação do User e associação da Wallet
 		User user = new User(dto.fullName(), dto.identificationDocument(), dto.email(), dto.password(), dto.type(),
