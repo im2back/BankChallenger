@@ -1,6 +1,6 @@
-# Status de Desenvolvimento 29/05/2024 🟢 
+# Status de Desenvolvimento 30/05/2024 🟢 
 
-- Parcialmente concluído (90%). Ainda será adicionado a dockerização.
+- Concluído
 ### Confira a proposta do desafio original acessando o seguinte link: 👉🏻 <a href="https://github.com/PicPay/picpay-desafio-backend">Desafio - PicPay</a>.
 <br><br>
  ▶ Clique na imagem abaixo para assistir ao vídeo de demonstração: CONSUMINDO E EXPLICANDO A API !
@@ -47,6 +47,7 @@ Esse esforço envolve trabalhar eficientemente com branches e pull requests para
 - Maven
 - Spring cloud
 - H2 Database
+- Docker
 
 # Como executar o projeto
 
@@ -60,6 +61,34 @@ git clone git@github.com:im2back/BankChallenger.git
 # executar o projeto
 - Entrar na pasta de cada microsserviço :
 ./mvnw spring-boot:run
+
+#Observações : ATENTAR-SE PARA AS PORTAS QUE ESTÃO SENDO USADAS NO PROJETO !!! VERIFICAR DISPONIBILIDADE DAS PORTAS !!!
+```
+## Utilizando Docker
+Pré-requisitos: Docker
+```bash
+#Inicializar o docker
+
+#Criar uma network
+docker network create bank
+
+#Baixar a imagem do microsserviço de usuários e rodar um container apartir dela
+
+Baixar a imagem 
+👉🏻 docker pull im2back/usermicroservice:latest
+
+Inicializar o Container 
+👉🏻 docker run -d --name user-microservice -p 8080:8080 --network bank im2back/usermicroservice:latest
+
+
+
+#Baixar a imagem do microsserviço de transferencia e rodar um container apartir dela
+
+Baixar a imagem 
+👉🏻 docker pull im2back/transfermicroservice:latest
+
+Inicializar o Container 
+👉🏻 docker run -d --name transfer-microservice -p 8081:8080 -e MOCK_AUTHORIZE=https://util.devi.tools/api/v2/authorize -e MOCK_NOTIFICATION=https://util.devi.tools/api/v1/notify -e USER_MS_URL=http://user-microservice:8080 --network bank im2back/transfermicroservice
 
 #Observações : ATENTAR-SE PARA AS PORTAS QUE ESTÃO SENDO USADAS NO PROJETO !!! VERIFICAR DISPONIBILIDADE DAS PORTAS !!!
 ```
