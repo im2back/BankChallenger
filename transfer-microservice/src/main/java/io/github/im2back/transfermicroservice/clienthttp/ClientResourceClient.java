@@ -14,7 +14,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 
-@FeignClient(name="user-microservice" ,url = "http://localhost:8080", path = "/users")
+@FeignClient(name="user-microservice" ,url = "${user-microservice.url}", path = "/users")
 public interface ClientResourceClient {
 	
 	@Operation(summary = "Faz uma requisição ao user-ms para buscar um usário por ID")
