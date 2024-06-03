@@ -38,6 +38,12 @@ Esse esforço envolve trabalhar eficientemente com branches e pull requests para
 ![sonar-userms](https://github.com/im2back/BankChallenger/assets/117541466/2f747ff8-6d2a-4b48-a7ee-d43ff976037c)
 ![jacoco-userms](https://github.com/im2back/BankChallenger/assets/117541466/79b6ec6d-87ca-4d35-8c0e-751e66d25c28)
 
+<br><br>
+# Dockerização
+### Como opção adicional para executar o projeto, realizei a sua dockerização, permitindo que ele seja executado em containers. Na seção abaixo, você encontrará um tutorial com instruções detalhadas sobre como rodar o projeto dessa forma.
+![image](https://github.com/im2back/BankChallenger/assets/117541466/65f83705-0041-4027-8650-a110cc948631)
+
+
 
 # Tecnologias utilizadas
 ## Back end
