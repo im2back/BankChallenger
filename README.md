@@ -1,6 +1,8 @@
-# Status de Desenvolvimento 30/05/2024 🟢 
+# Status de Desenvolvimento 04/06/2024 🟢 
 
-- Concluído
+-  EM REFATORAMENTO DA ARQUITETURA ! A aplicação ja havia sido concluída no entando foi observado pontos de melhoria e agora vou refatora-la.
+-  Motivo do refatoramento : 
+  
 ### Confira a proposta do desafio original acessando o seguinte link: 👉🏻 <a href="https://github.com/PicPay/picpay-desafio-backend">Desafio - PicPay</a>.
 <br><br>
  ▶ Clique na imagem abaixo para assistir ao vídeo de demonstração: CONSUMINDO E EXPLICANDO A API !
