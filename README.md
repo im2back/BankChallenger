@@ -1,7 +1,7 @@
 # Status de Desenvolvimento 04/06/2024 🟢 
 
 -  EM REFATORAMENTO DA ARQUITETURA ! A aplicação ja havia sido concluída no entando foi observado pontos de melhoria e agora vou refatora-la.
--  Motivo do refatoramento : 
+-  Motivo do refatoramento : Testando outro tipo de arquitetura utilizando Herança
   
 ### Confira a proposta do desafio original acessando o seguinte link: 👉🏻 <a href="https://github.com/PicPay/picpay-desafio-backend">Desafio - PicPay</a>.
 <br><br>
