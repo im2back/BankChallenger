@@ -13,7 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import io.github.im2back.usermicroservice.model.entities.user.User;
+import io.github.im2back.usermicroservice.model.entities.user.UserGeneric;
 import io.github.im2back.usermicroservice.repositories.UserRepository;
 import io.github.im2back.usermicroservice.service.exceptions.CannotBeDuplicatedException;
 import io.github.im2back.usermicroservice.util.UtilsTest;
@@ -33,11 +33,8 @@ class EmailCannotBeDuplicatedTest {
 	void valid() {
 		
 		// ARRANGE
-		Optional<User> user = Optional.ofNullable(UtilsTest.userComum);
-		BDDMockito
-				.when(userRepository
-						.findByEmail(UtilsTest.userRegisterRequest.email()))
-				.thenReturn(user);
+		Optional<UserGeneric> user = Optional.ofNullable(UtilsTest.userComum);
+		BDDMockito.when(userRepository.findByEmail(UtilsTest.userRegisterRequest.email())).thenReturn(user);
 
 		// ACT + ASSERT
 		assertThrows(CannotBeDuplicatedException.class,
@@ -49,11 +46,8 @@ class EmailCannotBeDuplicatedTest {
 	@DisplayName("Não deveria lançar uma exceção")
 	void shouldNotThrowExceptionWhenDocumentIsNotUsed() {
 		// ARRANGE
-		Optional<User> user = Optional.empty();
-		BDDMockito
-		.when(userRepository
-				.findByEmail(UtilsTest.userRegisterRequest.email()))
-		.thenReturn(user);
+		Optional<UserGeneric> user = Optional.empty();
+		BDDMockito.when(userRepository.findByEmail(UtilsTest.userRegisterRequest.email())).thenReturn(user);
 
 		// ACT + ASSERT
 		assertDoesNotThrow(() -> emailCannotBeDuplicated.valid(UtilsTest.userRegisterRequest));

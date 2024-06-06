@@ -47,7 +47,7 @@ class UserControllerTest {
 
 	@Autowired
 	private JacksonTester<TransferRequestDto> jacksonTransferRequestDto;
-
+	
 	@Captor
 	private ArgumentCaptor<UserRegisterRequestDto> captorUserRegisterRequestDto;
 
@@ -59,15 +59,15 @@ class UserControllerTest {
 	void findUser() throws Exception {
 		// ARRANGE
 		Long id = 1l;
-		BDDMockito.when(userService.findById(id)).thenReturn(UtilsTest.userComum);
+		BDDMockito.when(userService.findByIdReturnDto(id)).thenReturn(new UserRegisterResponseDto(UtilsTest.userComum));
 
 		// ACT
 		var response = mvc.perform(get("/users/" + id)).andReturn().getResponse();
-		UserRegisterResponseDto objetoRecebido = objectMapper.readValue(response.getContentAsString(),
-				UserRegisterResponseDto.class);
+		String jsonResponse = response.getContentAsString();
+		UserRegisterResponseDto objetoRecebido = objectMapper.readValue(jsonResponse, UserRegisterResponseDto.class);
 
 		// ASSERT
-		BDDMockito.then(userService).should().findById(id);
+		BDDMockito.then(userService).should().findByIdReturnDto(id);
 		assertEquals(200,response.getStatus(),  "Deveria retornar status 200 em caso de sucesso");
 		assertEquals(id, objetoRecebido.id(), "O id do objeto retornado deve ser igual ao id fornecido");
 
@@ -78,10 +78,12 @@ class UserControllerTest {
 	void saveUser() throws Exception {
 		// ARRANGE
 		var jsonRequest = this.jacksonUserRegisterRequestDto.write(UtilsTest.userRegisterRequest).getJson();
-		BDDMockito.when(userService.saveUser(any())).thenReturn(new UserRegisterResponseDto(UtilsTest.userLogista));
+		BDDMockito.when(userService.saveUser(UtilsTest.userRegisterRequest)).thenReturn(new UserRegisterResponseDto(UtilsTest.userLogista));
 
 		// ACT
-		var response = mvc.perform(post("/users").contentType(MediaType.APPLICATION_JSON).content(jsonRequest))
+		var response = mvc.perform(post("/users")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(jsonRequest))
 				.andReturn().getResponse();
 
 		UserRegisterResponseDto objetoRecebido = objectMapper.readValue(response.getContentAsString(),
@@ -93,7 +95,8 @@ class UserControllerTest {
 				captorUserRegisterRequestDto.getValue().identificationDocument(),
 				"Verificando se o método de serviço foi chamado com o parametro correto");
 		assertEquals(201,response.getStatus(),  "Deveria retornar status 201 em caso de sucesso");
-		assertEquals(objetoRecebido.identificationDocument(), UtilsTest.userRegisterRequest.identificationDocument(),
+		
+		assertEquals(UtilsTest.userRegisterRequest.identificationDocument(),objetoRecebido.identificationDocument(),
 				"O documento do objeto retornado deve ser igual ao documento fornecido");
 
 	}

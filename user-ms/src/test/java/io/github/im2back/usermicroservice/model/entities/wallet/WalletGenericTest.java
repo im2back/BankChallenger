@@ -7,16 +7,16 @@ import java.math.BigDecimal;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import io.github.im2back.usermicroservice.model.entities.user.User;
+import io.github.im2back.usermicroservice.model.entities.user.UserComum;
 import io.github.im2back.usermicroservice.util.UtilsTest;
 
-class WalletTest {
+class WalletGenericTest {
 
 	@Test
 	@DisplayName("Deveria deduzir o valor recebido como parametro da carteira")
 	void transfer() {
 		// ARRANGE
-		User user = UtilsTest.userComum;
+		UserComum user = UtilsTest.userComum;
 		user.getWallet().setBalance(new BigDecimal(100));	
 		BigDecimal value = new BigDecimal(10);
 		
@@ -30,7 +30,7 @@ class WalletTest {
 	@DisplayName("Deveria acrecentar o valor recebido como parametro da carteira")
 	void receiveTransfer() {
 		// ARRANGE
-		User user = UtilsTest.userComum;
+		UserComum user = UtilsTest.userComum;
 		user.getWallet().setBalance(new BigDecimal(100));	
 		BigDecimal value = new BigDecimal(10);
 		

@@ -67,7 +67,7 @@ public class GlobalHandlerException {
 
 		StandardError response = new StandardError();
 		response.setError("SERVICE UNAVAILABLE");
-		response.setMessage("O serviço de está temporariamente indisponível.");
+		response.setMessage("O serviço de menssagem está temporariamente indisponível.");
 		response.setStatus(HttpStatus.SERVICE_UNAVAILABLE.value());
 		response.setPath(request.getRequestURI());
 

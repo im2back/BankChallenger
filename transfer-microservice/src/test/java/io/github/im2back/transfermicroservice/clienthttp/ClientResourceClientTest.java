@@ -25,7 +25,7 @@ class ClientResourceClientTest {
 	@DisplayName("Deveria retornar UserDto ao chamar findUser")
 	void findUser() {
 		// ARRANGE
-		UserDto userDto = new UserDto(1L, "antonio", "123456789", "antonio@gmail.com", "123456", "COMUM", BigDecimal.ZERO);
+		UserDto userDto = new UserDto(1L, "antonio", "123456789", "antonio@gmail.com", "123456",BigDecimal.ZERO);
 		BDDMockito.when(clientResourceClient.findUser(1L)).thenReturn(new ResponseEntity<>(userDto, HttpStatus.OK));
 		
 		// ACT

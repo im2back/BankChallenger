@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import io.github.im2back.usermicroservice.service.exceptions.CannotBeDuplicatedException;
+import io.github.im2back.usermicroservice.service.exceptions.InvalidFormatException;
+import io.github.im2back.usermicroservice.service.exceptions.NotificationException;
 import io.github.im2back.usermicroservice.service.exceptions.UserNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -58,6 +60,31 @@ public class GlobalHandlerException {
 		response.setPath(request.getRequestURI());
 
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+	}
+	
+	@ExceptionHandler(NotificationException.class)
+	ResponseEntity<StandardError> notificationException(NotificationException ex, HttpServletRequest request) {
+
+		StandardError response = new StandardError();
+		response.setError("SERVICE UNAVAILABLE");
+		response.setMessage("O serviço de menssagem está temporariamente indisponível.");
+		response.setStatus(HttpStatus.SERVICE_UNAVAILABLE.value());
+		response.setPath(request.getRequestURI());
+
+		return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(response);
+	}
+
+	
+	@ExceptionHandler(InvalidFormatException.class)
+	ResponseEntity<StandardError> invalidFormatException(InvalidFormatException ex, HttpServletRequest request) {
+
+		StandardError response = new StandardError();
+		response.setError("BAD REQUEST");
+		response.setMessage(ex.getMessage());
+		response.setStatus(HttpStatus.BAD_REQUEST.value());
+		response.setPath(request.getRequestURI());
+
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	}
 
 }

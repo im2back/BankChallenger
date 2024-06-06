@@ -34,7 +34,7 @@ class BalanceCheckValidationTest {
 		Long idUserPayee = 2L;
 		BigDecimal value = new BigDecimal(100);
 
-		UserDto userDto = new UserDto(1l, "name", "123456", "jeff@gmail.com", "123456", "COMUM", new BigDecimal(100));
+		UserDto userDto = new UserDto(1l, "name", "123456", "jeff@gmail.com", "123456", new BigDecimal(100));
 		ResponseEntity<UserDto> body = ResponseEntity.ok(userDto);
 		BDDMockito.when(clientResourceClient.findUser(idUserPayer)).thenReturn(body);
 
@@ -52,7 +52,7 @@ class BalanceCheckValidationTest {
 		Long idUserPayee = 2L;
 		BigDecimal value = new BigDecimal(100);
 
-		UserDto userDto = new UserDto(1l, "name", "123456", "jeff@gmail.com", "123456", "COMUM", new BigDecimal(50));
+		UserDto userDto = new UserDto(1l, "name", "123456", "jeff@gmail.com", "123456", new BigDecimal(50));
 		ResponseEntity<UserDto> body = ResponseEntity.ok(userDto);
 		BDDMockito.when(clientResourceClient.findUser(idUserPayer)).thenReturn(body);
 
