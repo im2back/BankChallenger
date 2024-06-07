@@ -24,10 +24,15 @@ public class BalanceCheckValidation implements TransferValidations {
 
 		BigDecimal userPayerbalance = userPayer.walletBalance();
 
-		if (userPayerbalance.compareTo(value) <= 0 ) {
+		if (value.compareTo(new BigDecimal(0)) == 0) {
+			throw new TransferValidationException(
+					"invalid transfer amount, "+"Transaction amount: " + value);
+		}
+		if (userPayerbalance.compareTo(value) < 0 ) {
 			throw new TransferValidationException(
 					"Insufficient balance. Current balance: " + userPayerbalance + ", Transaction amount: " + value);
 		}
+
 
 	}
 }

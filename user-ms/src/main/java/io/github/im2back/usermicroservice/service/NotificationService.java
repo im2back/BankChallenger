@@ -1,4 +1,4 @@
-package io.github.im2back.transfermicroservice.service;
+package io.github.im2back.usermicroservice.service;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import io.github.im2back.transfermicroservice.service.exceptions.NotificationException;
-import io.github.im2back.transfermicroservice.service.util.NotificationRequestDto;
+import io.github.im2back.usermicroservice.service.exceptions.NotificationException;
+import io.github.im2back.usermicroservice.service.util.NotificationRequestDto;
 
 @Service
 public class NotificationService {
@@ -43,8 +43,6 @@ public class NotificationService {
 		} catch (HttpServerErrorException.GatewayTimeout ex) {
 			throw new NotificationException(ex.getMessage());
 		}
-		
 
 	}
-
 }

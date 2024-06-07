@@ -47,7 +47,7 @@ public class User {
 	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
 	private Wallet wallet;
 
-	public User(String fullName, String identificationDocument, String email, String password, UserType type,Wallet wallet) {
+	public User(String fullName, String identificationDocument, String email, String password, UserType type, Wallet wallet) {
 		super();
 		this.fullName = fullName;
 		this.identificationDocument = identificationDocument;

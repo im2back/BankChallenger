@@ -17,15 +17,16 @@ class WalletTest {
 	void transfer() {
 		// ARRANGE
 		User user = UtilsTest.userComum;
-		user.getWallet().setBalance(new BigDecimal(100));	
+		user.getWallet().setBalance(new BigDecimal(20));	
 		BigDecimal value = new BigDecimal(10);
 		
 		// ACT
-		user.getWallet().transfer(value);
+		user.getWallet().getType().transfer(user, value);
 		
 		// ASSERT
-		assertEquals(new BigDecimal(90), user.getWallet().getBalance());
+		assertEquals(new BigDecimal(10), user.getWallet().getBalance());
 	}
+	
 	@Test
 	@DisplayName("Deveria acrecentar o valor recebido como parametro da carteira")
 	void receiveTransfer() {

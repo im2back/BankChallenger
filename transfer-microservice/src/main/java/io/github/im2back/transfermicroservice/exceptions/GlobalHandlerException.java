@@ -73,7 +73,7 @@ public class GlobalHandlerException {
 
 		return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(response);
 	}
-
+	
 	@ExceptionHandler(RetryableException.class)
 	public ResponseEntity<StandardError> handleRetryableException(RetryableException ex, HttpServletRequest request) {
 
@@ -84,5 +84,17 @@ public class GlobalHandlerException {
 		response.setPath(request.getRequestURI());
 
 		return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(response);
+	}
+	
+	@ExceptionHandler(UnsupportedOperationException.class)
+	public ResponseEntity<StandardError> unsupportedOperationException(UnsupportedOperationException ex, HttpServletRequest request) {
+
+		StandardError response = new StandardError();
+		response.setError("Unsupported Operation");
+		response.setMessage(ex.getMessage());
+		response.setStatus(HttpStatus.NOT_IMPLEMENTED.value());
+		response.setPath(request.getRequestURI());
+
+		return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(response);
 	}
 }

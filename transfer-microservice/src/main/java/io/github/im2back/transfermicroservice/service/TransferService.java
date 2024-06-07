@@ -9,8 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import io.github.im2back.transfermicroservice.clienthttp.ClientResourceClient;
 import io.github.im2back.transfermicroservice.dto.TransferRequestDto;
-import io.github.im2back.transfermicroservice.dto.UserDto;
-import io.github.im2back.transfermicroservice.service.util.NotificationRequestDto;
 import io.github.im2back.transfermicroservice.validation.transfer.TransferValidations;
 
 @Service
@@ -21,9 +19,6 @@ public class TransferService {
 
 	@Autowired
 	private AuthorizationService authorizationService;
-
-	@Autowired
-	private NotificationService notificationService;
 
 	@Autowired
 	ClientResourceClient clientResourceClient;
@@ -43,15 +38,10 @@ public class TransferService {
 	}
 
 	public void receivePayment(Long idPayer, Long idPayee, BigDecimal value) {
-		var response = clientResourceClient.findUser(idPayee);
-		UserDto userPayee = response.getBody();
 
 		// requisicao enviando os ids e o valor para serem persistidos
 		clientResourceClient.transfer(new TransferRequestDto(idPayer, idPayee, value));
 
-		// Enviar notificação
-		notificationService
-				.sendNotification(new NotificationRequestDto(userPayee.email(), "Pagamento recebido com sucesso!"));
 	}
 
 }

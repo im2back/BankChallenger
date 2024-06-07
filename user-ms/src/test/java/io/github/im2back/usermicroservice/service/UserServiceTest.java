@@ -22,6 +22,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import io.github.im2back.usermicroservice.model.entities.user.User;
 import io.github.im2back.usermicroservice.repositories.UserRepository;
+import io.github.im2back.usermicroservice.service.util.NotificationRequestDto;
 import io.github.im2back.usermicroservice.util.UtilsTest;
 import io.github.im2back.usermicroservice.validation.user.UserRegistrationValidation;
 
@@ -33,6 +34,9 @@ class UserServiceTest {
 
 	@InjectMocks
 	private UserService userService;
+	
+	@Mock
+	private NotificationService notificationService;
 
 	@Spy
 	private List<UserRegistrationValidation> userRegistrationValidation = new ArrayList<>();
@@ -81,6 +85,7 @@ class UserServiceTest {
 
 		BDDMockito.when(repository.findById(1l)).thenReturn(userPayer);
 		BDDMockito.when(repository.findById(2l)).thenReturn(userPayee);
+		BDDMockito.doNothing().when(notificationService).sendNotification(any(NotificationRequestDto.class));
 		// ACT
 		userService.transfer(UtilsTest.transferRequestDto);
 

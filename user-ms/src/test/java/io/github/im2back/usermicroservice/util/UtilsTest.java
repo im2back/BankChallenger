@@ -7,6 +7,7 @@ import io.github.im2back.usermicroservice.model.dto.UserRegisterRequestDto;
 import io.github.im2back.usermicroservice.model.entities.user.User;
 import io.github.im2back.usermicroservice.model.entities.user.UserType;
 import io.github.im2back.usermicroservice.model.entities.wallet.Wallet;
+import io.github.im2back.usermicroservice.model.entities.wallet.WalletType;
 
 public class UtilsTest {
 
@@ -26,12 +27,12 @@ public class UtilsTest {
     static {
         // Inicialização do userComum e sua carteira
         userComum = new User(1L, "Claudio Serra", "123456789", "claudio@gmail.com", "12345678", UserType.COMUM, null);
-        walletComum = new Wallet(1L, new BigDecimal(100), userComum);
+        walletComum = new Wallet(1L, new BigDecimal(100), WalletType.COMUM, userComum);
         userComum.setWallet(walletComum);
 
         // Inicialização do userLogista e sua carteira
         userLogista = new User(2L, "Antonio Jose", "1234567810", "antonio@gmail.com", "12345678", UserType.LOGISTA, null);
-        walletLogista = new Wallet(2L, new BigDecimal(0), userLogista);
+        walletLogista = new Wallet(2L, new BigDecimal(0),WalletType.LOGISTA, userLogista);
         userLogista.setWallet(walletLogista);      
     }
 

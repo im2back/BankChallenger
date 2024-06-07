@@ -14,6 +14,10 @@ public class CustomErrorDecoder implements ErrorDecoder {
         if (response.status() == HttpStatus.NOT_FOUND.value()) {
             return new TransferValidationException("Recurso não encontrado");
         }
+        
+        if (response.status() == HttpStatus.NOT_IMPLEMENTED.value()) {
+            return new UnsupportedOperationException("Transfer operation is not supported");
+        }
         return new HttpClientErrorException(HttpStatus.valueOf(response.status()), "Erro no cliente Feign");
     }
 }
