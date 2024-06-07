@@ -29,6 +29,7 @@ Esse esforço envolve trabalhar eficientemente com branches e pull requests para
 
 <br><br>
 
+
 # Testes Unitarios
 ## Resultado das métricas utilizando Jacoco & Sonarqube
 <br><br>
@@ -51,9 +52,17 @@ Esse esforço envolve trabalhar eficientemente com branches e pull requests para
 - Spring cloud
 - H2 Database
 
+<br><br>
+
+# Docker
+Usou de docker para facilitar a execução
+![docker](https://github.com/im2back/BankChallenger/assets/117541466/3f5533ce-6bcf-48d0-84fc-16d2c713f1aa)
+
+<br>
+
 # Como executar o projeto
 
-## Back end
+## Utilizando dependencias locais
 Pré-requisitos: Java 17
 
 ```bash
@@ -66,6 +75,25 @@ git clone git@github.com:im2back/BankChallenger.git
 
 #Observações : ATENTAR-SE PARA AS PORTAS QUE ESTÃO SENDO USADAS NO PROJETO !!! VERIFICAR DISPONIBILIDADE DAS PORTAS !!!
 ```
+## Utilizando o docker
+```
+# Baixar as imagens
+docker pull im2back/usermicroservice:latest
+docker pull im2back/transfermicroservice:latest
+
+
+# Criar uma network em comum
+docker network create bank
+
+
+# Subir os containers
+docker run -d --name transfer-microservice -p 8081:8080 -e MOCK_AUTHORIZE=https://util.devi.tools/api/v2/authorize -e  USER_MS_URL=http://user-microservice:8080 --network bank im2back/transfermicroservice:latest
+
+docker run -d --name user-microservice -p 8080:8080 -e URL_NOTIFY=https://util.devi.tools/api/v1/notify --network bank im2back/usermicroservice:latest
+
+# Ser feliz e consumir a api via postman através da documentação
+```
+
 
 # Autor
 
