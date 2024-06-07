@@ -1,11 +1,11 @@
 # Status de Desenvolvimento 29/05/2024 🟢 
 
-- Parcialmente concluído (90%). Ainda será adicionado a dockerização.
+- concluído.
 ### Confira a proposta do desafio original acessando o seguinte link: 👉🏻 <a href="https://github.com/PicPay/picpay-desafio-backend">Desafio - PicPay</a>.
 <br><br>
  ▶ Clique na imagem abaixo para assistir ao vídeo de demonstração: CONSUMINDO E EXPLICANDO A API !
 
-[![Watch the video](https://img.youtube.com/vi/K3YI8UU0_g8/0.jpg)](https://youtu.be/K3YI8UU0_g8)
+EM BREVE.....
 
 # Objetivos ao Desenvolver Este Desafio 🏋🏻‍♀️
 Meu objetivo principal é aplicar meus conhecimentos em arquitetura e incorporar as melhores práticas de desenvolvimento.
@@ -14,6 +14,9 @@ Esse esforço envolve trabalhar eficientemente com branches e pull requests para
 <br><br>
 
 ### 📌OBS: Alguns comentários foram mantidos para fins de estudo e consultas futuras.Os comentários são discretos e não comprometem a visibilidade.
+
+# Diagrama de classes
+![Diagrama API HERANÇA](https://github.com/im2back/BankChallenger/assets/117541466/36b4277b-c295-42bc-bec5-bc56d9893fe8)
 
 # Documentação
 ### Arquivo da documentação utilizando Postman 👉🏻 <a href="https://drive.google.com/file/d/19tYC01DhH4lczly90nR0rixRVF2arAMO/view?usp=sharing">Documentação - Postman</a>
