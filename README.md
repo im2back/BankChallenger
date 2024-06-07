@@ -5,7 +5,12 @@
 <br><br>
  ▶ Clique na imagem abaixo para assistir ao vídeo de demonstração: CONSUMINDO E EXPLICANDO A API !
 
-EM BREVE.....
+
+
+[![Assista ao meu vídeo no YouTube](https://img.youtube.com/vi/dx0jznpEJ28/0.jpg
+)](https://www.youtube.com/watch?v=dx0jznpEJ28)
+
+
 
 # Objetivos ao Desenvolver Este Desafio 🏋🏻‍♀️
 Meu objetivo principal é aplicar meus conhecimentos em arquitetura e incorporar as melhores práticas de desenvolvimento.
