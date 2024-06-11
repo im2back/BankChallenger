@@ -12,7 +12,7 @@ ARG JAR_FILE=target/*.jar
 COPY --from=build /usr/src/app/${JAR_FILE} app.jar
 
 ARG MOCK_AUTHORIZE=param
-ARG MOCK_NOTIFICATION=param
 ARG USER_MS_URL=param
+ARG RABBIT_MQ=param
 
 ENTRYPOINT ["java", "-jar","-Dspring.profiles.active=prod", "/app.jar"]

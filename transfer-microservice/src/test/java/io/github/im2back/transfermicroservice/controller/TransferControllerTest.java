@@ -19,6 +19,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import io.github.im2back.transfermicroservice.dto.TransferRequestDto;
+import io.github.im2back.transfermicroservice.service.TransactionService;
 import io.github.im2back.transfermicroservice.service.TransferService;
 
 @WebMvcTest(TransferController.class)
@@ -28,6 +29,9 @@ class TransferControllerTest {
 
 	@MockBean
 	private TransferService service;
+	
+	@MockBean
+	private TransactionService transactionService;
 
 	@Autowired
 	private MockMvc mvc;
@@ -48,8 +52,8 @@ class TransferControllerTest {
 				.content(jsonRequest)).andReturn().getResponse();
 		
 		//ASSERT
-		assertEquals(200, response.getStatus(),"Deveria retornar status 200");
-		BDDMockito.then(service).should().transfer(1l, 2l, new BigDecimal(100));
+		   assertEquals(200, response.getStatus(), "Deveria retornar status 200");
+		    BDDMockito.then(service).should().transfer(1l, 2l, new BigDecimal(100));
 	}
 
 }

@@ -22,7 +22,7 @@ public class UtilsTest {
     		new UserRegisterRequestDto("Antonio Jose", "1234567810", "antonio@gmail.com", "12345678", UserType.LOGISTA);
     
     public static final TransferRequestDto transferRequestDto = 
-    		new TransferRequestDto(1l, 2l, new BigDecimal(50));
+    		new TransferRequestDto(1l, 2l, new BigDecimal(50),1l);
 
     static {
         // Inicialização do userComum e sua carteira

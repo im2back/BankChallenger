@@ -17,9 +17,9 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import io.github.im2back.transfermicroservice.dto.AuthorizationResponseDto;
+import io.github.im2back.transfermicroservice.dto.Data;
 import io.github.im2back.transfermicroservice.service.exceptions.AuthorizationException;
-import io.github.im2back.transfermicroservice.service.util.AuthorizationResponseDto;
-import io.github.im2back.transfermicroservice.service.util.Data;
 
 @ExtendWith(MockitoExtension.class)
 class AuthorizationServiceTest {
@@ -49,7 +49,7 @@ class AuthorizationServiceTest {
 				.thenReturn(responseMethod);
 
 		// ACT
-		var response = authorizationService.authorizeTransfer();
+		var response = authorizationService.authorize();
 
 		// ASSERT
 		BDDMockito.then(restTemplate).should().exchange("http://mocked.url/transfer", method, null,
@@ -74,7 +74,7 @@ class AuthorizationServiceTest {
 		// ACT+ ASSERT
 
 		assertThrows(AuthorizationException.class, () -> {
-			authorizationService.authorizeTransfer();
+			authorizationService.authorize();
 		}, "Deveria lançar a exceção AuthorizationException ");
 	}
 
@@ -92,7 +92,7 @@ class AuthorizationServiceTest {
 				.thenReturn(responseMethod);
 
 		// ACT
-		authorizationService.finalizeTransfer();
+		authorizationService.authorizeTransfer();
 
 		// ASSERT
 	}
@@ -109,7 +109,7 @@ class AuthorizationServiceTest {
 
 		// ACT + ASSERT
 		assertThrows(AuthorizationException.class, () -> {
-			authorizationService.finalizeTransfer();
+			authorizationService.authorizeTransfer();
 		}, "Deveria lançar uma exceção do tipo AuthorizationException");
 
 	}
