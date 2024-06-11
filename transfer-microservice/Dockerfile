@@ -13,5 +13,6 @@ COPY --from=build /usr/src/app/${JAR_FILE} app.jar
 
 ARG MOCK_AUTHORIZE=param
 ARG USER_MS_URL=param
+ARG RABBIT_MQ=param
 
 ENTRYPOINT ["java", "-jar","-Dspring.profiles.active=prod", "/app.jar"]

@@ -34,7 +34,6 @@ public class TransferService {
 		} catch (AuthorizationException e) {
 			transactionService.saveTransaction(transactionService.instatiateTransaciton(idPayer, idPayee,
 					e.getMessage(), value, TransactionStatus.CANCELED));
-			throw e;
 		}
 
 	}

@@ -38,7 +38,6 @@ public class TransferController {
 		@ApiResponse(responseCode = "400", description = "Retorna uma exceção TransferValidationException caso o saldo seja insuficiente"),
 		@ApiResponse(responseCode = "400", description = "Retorna uma exceção TransferValidationException caso o payer n'ao possua autoridade"),
 		@ApiResponse(responseCode = "401", description = "Retorna uma exceção AuthorizationException caso o autorizador externo retorne resposta negativa"),
-		@ApiResponse(responseCode = "503 ", description = "Retorna uma exceção NotificationException caso o serviço de notificação esteje indisponivel"),
 	})
 	@PostMapping
 	public ResponseEntity<Void> transfer(@Valid @RequestBody TransferRequestDto dto) throws JsonProcessingException {
