@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -45,9 +44,6 @@ class UserControllerTest {
 	@Autowired
 	private JacksonTester<UserRegisterRequestDto> jacksonUserRegisterRequestDto;
 
-	@Autowired
-	private JacksonTester<TransferRequestDto> jacksonTransferRequestDto;
-
 	@Captor
 	private ArgumentCaptor<UserRegisterRequestDto> captorUserRegisterRequestDto;
 
@@ -68,7 +64,7 @@ class UserControllerTest {
 
 		// ASSERT
 		BDDMockito.then(userService).should().findById(id);
-		assertEquals(200,response.getStatus(),  "Deveria retornar status 200 em caso de sucesso");
+		assertEquals(200, response.getStatus(), "Deveria retornar status 200 em caso de sucesso");
 		assertEquals(id, objetoRecebido.id(), "O id do objeto retornado deve ser igual ao id fornecido");
 
 	}
@@ -92,38 +88,10 @@ class UserControllerTest {
 		assertEquals(UtilsTest.userRegisterRequest.identificationDocument(),
 				captorUserRegisterRequestDto.getValue().identificationDocument(),
 				"Verificando se o método de serviço foi chamado com o parametro correto");
-		assertEquals(201,response.getStatus(),  "Deveria retornar status 201 em caso de sucesso");
+		assertEquals(201, response.getStatus(), "Deveria retornar status 201 em caso de sucesso");
 		assertEquals(objetoRecebido.identificationDocument(), UtilsTest.userRegisterRequest.identificationDocument(),
 				"O documento do objeto retornado deve ser igual ao documento fornecido");
 
 	}
-
-	@Test
-    @DisplayName("Deveria realizar uma transação e retornar status 200")
-    void transfer() throws Exception {
-        // ARRANGE
-        var jsonRequest = this.jacksonTransferRequestDto.write(UtilsTest.transferRequestDto).getJson();
-        BDDMockito.doNothing().when(userService).transfer(any(TransferRequestDto.class));
-
-        // ACT
-        var response = mvc.perform(put("/users/transfer")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(jsonRequest))
-                .andReturn().getResponse();
-
-        // ASSERT
-        BDDMockito.then(userService).should().transfer(this.captorTransferRequestDto.capture());
-
-        assertEquals(UtilsTest.transferRequestDto.idPayer(), captorTransferRequestDto.getValue().idPayer(),
-                "Verificando se o Id do pagante está sendo passado corretamente como parâmetro");
-
-        assertEquals(UtilsTest.transferRequestDto.idPayee(), captorTransferRequestDto.getValue().idPayee(),
-                "Verificando se o Id do recebedor está sendo passado corretamente como parâmetro");
-
-        assertEquals(UtilsTest.transferRequestDto.value(), captorTransferRequestDto.getValue().value(),
-                "Verificando se o valor da transação está correto");
-
-        assertEquals(200,response.getStatus(),  "Deveria retornar status 200 em caso de sucesso");
-    }
 
 }

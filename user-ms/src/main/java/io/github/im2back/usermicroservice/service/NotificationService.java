@@ -41,7 +41,7 @@ public class NotificationService {
 		try {
 			restTemplate.exchange(notificationUrl, HttpMethod.POST, entity, Void.class);
 		} catch (HttpServerErrorException.GatewayTimeout ex) {
-			throw new NotificationException(ex.getMessage());
+			throw new NotificationException("The service notification is not available, try again later");
 		}
 
 	}

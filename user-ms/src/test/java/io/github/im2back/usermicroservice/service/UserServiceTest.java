@@ -2,10 +2,11 @@ package io.github.im2back.usermicroservice.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,10 +21,14 @@ import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
+import io.github.im2back.usermicroservice.amqp.UserTransferPublish;
+import io.github.im2back.usermicroservice.model.dto.TransferResponseDto;
 import io.github.im2back.usermicroservice.model.entities.user.User;
 import io.github.im2back.usermicroservice.repositories.UserRepository;
-import io.github.im2back.usermicroservice.service.util.NotificationRequestDto;
 import io.github.im2back.usermicroservice.util.UtilsTest;
+import io.github.im2back.usermicroservice.validation.transfer.TransferValidations;
 import io.github.im2back.usermicroservice.validation.user.UserRegistrationValidation;
 
 @ExtendWith(MockitoExtension.class)
@@ -34,20 +39,34 @@ class UserServiceTest {
 
 	@InjectMocks
 	private UserService userService;
-	
+
 	@Mock
 	private NotificationService notificationService;
 
+	@Mock
+	private UserTransferPublish userTransferPublish;
+
 	@Spy
 	private List<UserRegistrationValidation> userRegistrationValidation = new ArrayList<>();
+
+	@Spy
+	private List<TransferValidations> transferValidations = new ArrayList<>();
 
 	@Mock
 	private UserRegistrationValidation valid01;
 	@Mock
 	private UserRegistrationValidation valid02;
 
+	@Mock
+	private TransferValidations valid04;
+	@Mock
+	private TransferValidations valid03;
+
 	@Captor
 	private ArgumentCaptor<User> userCaptor;
+	
+	@Captor
+	private ArgumentCaptor<Iterable<User>> captor;
 
 	@Test
 	@DisplayName("deveria salvar um usuario no banco de dados e retornar um dto do mesmo")
@@ -76,24 +95,6 @@ class UserServiceTest {
 	}
 
 	@Test
-	@DisplayName("Deveria transferir valores entre usuários")
-	void transfer() {
-
-		// ARRANGE
-		Optional<User> userPayer = Optional.ofNullable(UtilsTest.userComum);
-		Optional<User> userPayee = Optional.ofNullable(UtilsTest.userLogista);
-
-		BDDMockito.when(repository.findById(1l)).thenReturn(userPayer);
-		BDDMockito.when(repository.findById(2l)).thenReturn(userPayee);
-		BDDMockito.doNothing().when(notificationService).sendNotification(any(NotificationRequestDto.class));
-		// ACT
-		userService.transfer(UtilsTest.transferRequestDto);
-
-		// ASSERT
-		BDDMockito.then(repository).should().saveAll(Arrays.asList(userPayee.get(), userPayer.get()));
-	}
-
-	@Test
 	@DisplayName("Deveria carregar um usuario apartir de um id")
 	void findById() {
 
@@ -109,40 +110,45 @@ class UserServiceTest {
 		BDDMockito.then(repository).should().findById(id);
 		assertEquals(UtilsTest.userComum.getIdentificationDocument(), response.getIdentificationDocument());
 	}
-	
+
 	@Test
-	@DisplayName("Deveria carregar um usuario apartir de um Document")
-	void findByDocument() {
+	@DisplayName("Deveria fazer uam tranferencia e não retornar nada em caso de sucesso")
+	void transfer() throws JsonProcessingException {
 
 		// ARRANGE
+		transferValidations.add(valid03);
+		transferValidations.add(valid04);
+		
 		Optional<User> user = Optional.ofNullable(UtilsTest.userComum);
-		String document = "123456789";
-		BDDMockito.when(repository.findByIdentificationDocument(document)).thenReturn(user);
-
-		// ACT
-		var response = userService.findByDocument(document);
+		Optional<User> user2 = Optional.ofNullable(UtilsTest.userLogista);
+		BDDMockito.when(repository.findById(1l)).thenReturn(user);
+		BDDMockito.when(repository.findById(2l)).thenReturn(user2);
+		
+		BDDMockito.doNothing().when(notificationService).sendNotification(any());
+					
+		TransferResponseDto transferResponseDto = new TransferResponseDto(1l, "sucess", true);
+		
+		// ACt
+		userService.transfer(UtilsTest.transferRequestDto);
 
 		// ASSERT
-		BDDMockito.then(repository).should().findByIdentificationDocument(document);
-		assertEquals(response.get().getIdentificationDocument(),document,
-				"Verifica se o usuario retornado possui o mesmo documento do parametro");
-	}
-	
-	@Test
-	@DisplayName("Deveria carregar um usuario apartir de um email")
-	void findByEmail() {
-
-		// ARRANGE
-		Optional<User> user = Optional.ofNullable(UtilsTest.userComum);
-		String email = "claudio@gmail.com";
-		BDDMockito.when(repository.findByEmail(email)).thenReturn(user);
-
-		// ACT
-		var response = userService.findByEmail(email);
-
-		// ASSERT
-		BDDMockito.then(repository).should().findByEmail(email);
-		assertEquals(response.get().getEmail(),email,"Verifica se o usuario retornado possui o mesmo email do parametro");
+		BDDMockito.then(valid03).should().valid(UtilsTest.transferRequestDto.idPayer(),
+				UtilsTest.transferRequestDto.idPayee(), UtilsTest.transferRequestDto.value());
+		BDDMockito.then(valid04).should().valid(UtilsTest.transferRequestDto.idPayer(),
+				UtilsTest.transferRequestDto.idPayee(), UtilsTest.transferRequestDto.value());
+		BDDMockito.then(repository).should().findById(1l);
+		BDDMockito.then(repository).should().findById(2l);
+		
+		verify(repository,times(1)).saveAll(captor.capture());
+		Iterable<User> savedUsers = captor.getValue();
+		
+		for (User u : savedUsers) {
+		    if (u.getId().equals(UtilsTest.userLogista.getId())) {
+		        assertEquals(50, u.getWallet().getBalance().intValue(),"Verificando se a transferencia foi feita"); 
+		    }
+		
+		verify(userTransferPublish,times(1)).responseTransfer(transferResponseDto);	
+		verify(notificationService,times(1)).sendNotification(any());
 	}
 
-}
+}}

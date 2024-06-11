@@ -1,46 +1,53 @@
 package io.github.im2back.transfermicroservice.service;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import io.github.im2back.transfermicroservice.clienthttp.ClientResourceClient;
+import com.fasterxml.jackson.core.JsonProcessingException;
+
+import io.github.im2back.transfermicroservice.amqp.TransactionPublisher;
+import io.github.im2back.transfermicroservice.dto.TransferPublishDto;
 import io.github.im2back.transfermicroservice.dto.TransferRequestDto;
-import io.github.im2back.transfermicroservice.validation.transfer.TransferValidations;
+import io.github.im2back.transfermicroservice.model.transaction.TransactionStatus;
+import io.github.im2back.transfermicroservice.service.exceptions.AuthorizationException;
 
 @Service
 public class TransferService {
 
 	@Autowired
-	private List<TransferValidations> transferValidations;
-
-	@Autowired
 	private AuthorizationService authorizationService;
 
 	@Autowired
-	ClientResourceClient clientResourceClient;
+	TransactionPublisher transactionPublisher;
 
-	@Transactional
-	public void transfer(Long idPayer, Long idPayee, BigDecimal value) {
+	@Autowired
+	private TransactionService transactionService;
 
-		// validacoes de usuario
-		transferValidations.forEach(valid -> valid.valid(idPayer, idPayee, value));
+	public void transfer(Long idPayer, Long idPayee, BigDecimal value) throws JsonProcessingException {
 
-		// autorizador externo
-		authorizationService.finalizeTransfer();
+		try {
+			authorizationService.authorizeTransfer();
+			finalizeTransfer(idPayer, idPayee, value);
 
-		// transferencia
-		receivePayment(idPayer, idPayee, value);
+		} catch (AuthorizationException e) {
+			transactionService.saveTransaction(transactionService.instatiateTransaciton(idPayer, idPayee,
+					e.getMessage(), value, TransactionStatus.CANCELED));
+			throw e;
+		}
 
 	}
 
-	public void receivePayment(Long idPayer, Long idPayee, BigDecimal value) {
+	public void finalizeTransfer(Long idPayer, Long idPayee, BigDecimal value) throws JsonProcessingException {
 
-		// requisicao enviando os ids e o valor para serem persistidos
-		clientResourceClient.transfer(new TransferRequestDto(idPayer, idPayee, value));
+		// salvando a transferência com status de PROCESSAMENTO e pegando seu id
+		var idTransaction = transactionService.saveTransaction(
+				transactionService.instatiateTransaciton(idPayer, idPayee, "IN ANALYZING", value, TransactionStatus.PROCESSING));
+
+		// enviando a transação para a fila do rabbitmq
+		transactionPublisher
+				.issueTransfer(new TransferPublishDto(new TransferRequestDto(idPayer, idPayee, value), idTransaction));
 
 	}
 

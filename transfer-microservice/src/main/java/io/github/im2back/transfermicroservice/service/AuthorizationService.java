@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import io.github.im2back.transfermicroservice.dto.AuthorizationResponseDto;
 import io.github.im2back.transfermicroservice.service.exceptions.AuthorizationException;
-import io.github.im2back.transfermicroservice.service.util.AuthorizationResponseDto;
 
 @Service
 public class AuthorizationService {
@@ -22,7 +22,7 @@ public class AuthorizationService {
 		this.restTemplate = restTemplate;
 	}
 
-	public ResponseEntity<AuthorizationResponseDto> authorizeTransfer() {
+	public ResponseEntity<AuthorizationResponseDto> authorize() {
 		try {
 			ResponseEntity<AuthorizationResponseDto> response = restTemplate.exchange(authorizationUrl, HttpMethod.GET,
 					null, AuthorizationResponseDto.class);
@@ -33,8 +33,8 @@ public class AuthorizationService {
 		}
 	}
 
-	public void finalizeTransfer() {
-		ResponseEntity<AuthorizationResponseDto> response = authorizeTransfer();
+	public void authorizeTransfer() {
+		ResponseEntity<AuthorizationResponseDto> response = authorize();
 		AuthorizationResponseDto body = response.getBody();
 
 		Integer responseStatus = response.getStatusCode().value();

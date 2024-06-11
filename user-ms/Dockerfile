@@ -11,4 +11,6 @@ USER spring:spring
 ARG JAR_FILE=target/*.jar
 COPY --from=build /usr/src/app/${JAR_FILE} app.jar
 
+ARG URL_NOTIFY=param
+
 ENTRYPOINT ["java", "-jar","-Dspring.profiles.active=prod", "/app.jar"]

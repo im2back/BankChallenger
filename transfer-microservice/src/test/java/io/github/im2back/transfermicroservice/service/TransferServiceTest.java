@@ -1,26 +1,27 @@
 package io.github.im2back.transfermicroservice.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.Instant;
+import java.time.ZoneId;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.BDDMockito;
+import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.ResponseEntity;
 
-import io.github.im2back.transfermicroservice.clienthttp.ClientResourceClient;
-import io.github.im2back.transfermicroservice.dto.TransferRequestDto;
-import io.github.im2back.transfermicroservice.dto.UserDto;
-import io.github.im2back.transfermicroservice.validation.transfer.TransferValidations;
+import com.fasterxml.jackson.core.JsonProcessingException;
+
+import io.github.im2back.transfermicroservice.amqp.TransactionPublisher;
+import io.github.im2back.transfermicroservice.model.transaction.Transaction;
+import io.github.im2back.transfermicroservice.model.transaction.TransactionStatus;
 
 @ExtendWith(MockitoExtension.class)
 class TransferServiceTest {
@@ -28,59 +29,41 @@ class TransferServiceTest {
 	@InjectMocks
 	private TransferService transferService;
 
-	@Spy
-	private List<TransferValidations> transferValidations = new ArrayList<>();
-
-	@Mock
-	TransferValidations valid01;
-
-	@Mock
-	TransferValidations valid02;
-
 	@Mock
 	private AuthorizationService authorizationService;
 
 	@Mock
-	ClientResourceClient clientResourceClient;
+	TransactionPublisher transactionPublisher;
+
+	@Mock
+	private TransactionService transactionService;
+
+	@Captor
+	private ArgumentCaptor<Transaction> captorTransaction;
 
 	@Test
-	@DisplayName("Deveria fazer os chamados para realizar a transferencia e não retornar nada")
-	void test() {
-
+	@DisplayName("deveria iniciar a transferencia e fazer os chamados")
+	void transfer() throws JsonProcessingException {
 		// ARRANGE
 		Long idPayer = 1l;
 		Long idPayee = 2l;
 		BigDecimal value = new BigDecimal(100);
 
-		transferValidations.add(valid01);
-		transferValidations.add(valid02);
+		Transaction transaction = new Transaction(null, idPayer, idPayee,
+				Instant.now().atZone(ZoneId.of("America/Sao_Paulo")), TransactionStatus.PROCESSING, "IN ANALYZING",
+				value);
 
-		BDDMockito.doNothing().when(authorizationService).finalizeTransfer();
-
+		BDDMockito.when(transactionService.instatiateTransaciton(idPayer, idPayee, "IN ANALYZING", value,
+				TransactionStatus.PROCESSING)).thenReturn(transaction);
 		// ACT
+
 		transferService.transfer(idPayer, idPayee, value);
 
 		// ASSERT
-		BDDMockito.then(valid01).should().valid(idPayer, idPayee, value);
-		BDDMockito.then(valid02).should().valid(idPayer, idPayee, value);
+		BDDMockito.then(transactionService).should().saveTransaction(captorTransaction.capture());
+		assertEquals(transaction.getIdPayer(), captorTransaction.getValue().getIdPayer());
 
-		verify(authorizationService, times(1)).finalizeTransfer();
-	}
-
-	@Test
-	@DisplayName("Deveria acionar os serviços para finalizar a transferencia e não retornar nada")
-	void receivePayment() {
-
-		// ARRANGE
-		Long idPayer = 1l;
-		Long idPayee = 2l;
-		BigDecimal value = new BigDecimal(100);
-
-		// ACT
-		transferService.receivePayment(idPayer, idPayee, value);
-
-		// ASSERT
-		BDDMockito.then(clientResourceClient).should().transfer(new TransferRequestDto(idPayer, idPayee, value));
+		BDDMockito.verify(authorizationService, times(1)).authorizeTransfer();
 
 	}
 
