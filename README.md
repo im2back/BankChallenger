@@ -16,7 +16,8 @@ Esse esforço envolve trabalhar eficientemente com branches e pull requests para
  ▶ Clique na imagem abaixo para assistir ao vídeo de demonstração: CONSUMINDO E EXPLICANDO A API !
 
 # VÍDEO PARA VERSÃO ULTIMATE (COM MENSSAGERIA)
- ### Em breve... 
+[![Assista ao meu vídeo no YouTube](https://img.youtube.com/vi/INR7-Pjzj-8/0.jpg)](https://youtu.be/INR7-Pjzj-8?si=2213c65zTcbgHBoj)
+
 
 # VÍDEO PARA VERSÃO LATEST (SEM MENSSAGERIA)
 [![Assista ao meu vídeo no YouTube](https://img.youtube.com/vi/dx0jznpEJ28/0.jpg
